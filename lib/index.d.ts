@@ -642,10 +642,10 @@ declare namespace Joi {
 
     type ValidationErrorFunction = (errors: ErrorReport[]) => string | ValidationErrorItem | Error;
 
-    interface ValidationResult {
+    interface ValidationResult<TSchema = any> {
         error?: ValidationError;
         warning?: ValidationError;
-        value: any;
+        value: TSchema;
     }
 
     interface CreateErrorOptions {
@@ -828,7 +828,7 @@ declare namespace Joi {
         $_validate(value: any, state: State, prefs: ValidationOptions): ValidationResult;
     }
 
-    interface AnySchema extends SchemaInternals {
+    interface AnySchema<TSchema = any> extends SchemaInternals {
         /**
          * Flags of current schema.
          */
@@ -1151,7 +1151,7 @@ declare namespace Joi {
         /**
          * Validates a value using the schema and options.
          */
-        validate(value: any, options?: ValidationOptions): ValidationResult;
+        validate(value: any, options?: ValidationOptions): ValidationResult<TSchema>;
 
         /**
          * Validates a value using the schema and options.
@@ -1571,7 +1571,7 @@ declare namespace Joi {
         matches: SchemaLike | Reference;
     }
 
-    interface ObjectSchema<TSchema = any> extends AnySchema {
+    interface ObjectSchema<TSchema = any> extends AnySchema<TSchema> {
         /**
          * Defines an all-or-nothing relationship between keys where if one of the peers is present, all of them are required as well.
          *
