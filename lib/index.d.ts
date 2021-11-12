@@ -642,10 +642,14 @@ declare namespace Joi {
 
     type ValidationErrorFunction = (errors: ErrorReport[]) => string | ValidationErrorItem | Error;
 
-    interface ValidationResult<TSchema = any> {
-        error?: ValidationError;
+    type ValidationResult<TSchema = any> = {
+        error: undefined;
         warning?: ValidationError;
         value: TSchema;
+    } | {
+        error: ValidationError;
+        warning?: ValidationError;
+        value: undefined;
     }
 
     interface CreateErrorOptions {
@@ -688,7 +692,7 @@ declare namespace Joi {
 
     type NullableType<T> = undefined | null | T
 
-    type ObjectPropertiesSchema<T = any> = 
+    type ObjectPropertiesSchema<T = any> =
         T extends NullableType<string>
         ? Joi.StringSchema
         : T extends NullableType<number>
@@ -701,13 +705,13 @@ declare namespace Joi {
         ? Joi.ArraySchema
         : T extends NullableType<object>
         ? ObjectSchema<StrictSchemaMap<T>>
-        : never    
-    
+        : never
+
     type PartialSchemaMap<TSchema = any> = {
         [key in keyof TSchema]?: SchemaLike | SchemaLike[];
-    } 
+    }
 
-    type StrictSchemaMap<TSchema = any> =  {
+    type StrictSchemaMap<TSchema = any> = {
         [key in keyof TSchema]-?: ObjectPropertiesSchema<TSchema[key]>
     };
 
@@ -1156,7 +1160,7 @@ declare namespace Joi {
         /**
          * Validates a value using the schema and options.
          */
-        validateAsync(value: any, options?: AsyncValidationOptions): Promise<any>;
+        validateAsync(value: any, options?: AsyncValidationOptions): Promise<TSchema>;
 
         /**
          * Same as `rule({ warn: true })`.
