@@ -692,7 +692,7 @@ declare namespace Joi {
 
     type NullableType<T> = undefined | null | T
 
-    type ObjectPropertiesSchema<T = any> =
+    type ObjectPropertiesSchema<T = any> = 
         T extends NullableType<string>
         ? Joi.StringSchema
         : T extends NullableType<number>
@@ -705,13 +705,13 @@ declare namespace Joi {
         ? Joi.ArraySchema
         : T extends NullableType<object>
         ? ObjectSchema<StrictSchemaMap<T>>
-        : never
-
+        : never    
+    
     type PartialSchemaMap<TSchema = any> = {
         [key in keyof TSchema]?: SchemaLike | SchemaLike[];
-    }
+    } 
 
-    type StrictSchemaMap<TSchema = any> = {
+    type StrictSchemaMap<TSchema = any> =  {
         [key in keyof TSchema]-?: ObjectPropertiesSchema<TSchema[key]>
     };
 
@@ -1160,7 +1160,7 @@ declare namespace Joi {
         /**
          * Validates a value using the schema and options.
          */
-        validateAsync(value: any, options?: AsyncValidationOptions): Promise<TSchema>;
+        validateAsync(value: any, options?: AsyncValidationOptions): Promise<any>;
 
         /**
          * Same as `rule({ warn: true })`.
